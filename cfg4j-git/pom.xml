@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cfg4j-git</artifactId>
+	<name>cfg4j-git</name>
+	<description>Adds Git repository configuration reading to cfg4j</description>
+	<url>http://cfg4j.org</url>
+	<packaging>jar</packaging>
+
+	<!-- Set Java version to use as well as encoding -->
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<!-- Set software license -->
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
+	<!-- Declare the parent project -->
+	<parent>
+		<groupId>org.cfg4j</groupId>
+		<artifactId>cfg4j</artifactId>
+		<version>5.0.1-SNAPSHOT</version>
+	</parent>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<!-- Specific dependencies to this module -->
+		<dependency>
+			<groupId>org.cfg4j</groupId>
+			<artifactId>cfg4j-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>5.0.2.201807311906-r</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cfg4j</groupId>
+			<artifactId>cfg4j-core</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+			<type>test-jar</type>
+			<classifier>tests</classifier>
+		</dependency>
+		
+		<!-- Common dependencies (version and scope managed by parent POM) -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+		</dependency>
+	</dependencies>
+</project>
