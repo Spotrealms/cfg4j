@@ -42,7 +42,6 @@ subprojects {
     apply plugin: "maven"
     apply plugin: "signing"
     apply plugin: "com.github.ben-manes.versions"
-	apply plugin: 'maven'
 
     // ----------- Repositories -----------
     repositories {
