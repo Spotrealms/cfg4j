@@ -49,7 +49,7 @@ public interface ConfigurationProvider {
    *   boolean myBooleanProperty = configurationProvider.getProperty("my.property", boolean.class);
    * </pre>
    *
-   * @param <T>  property type. Supported baic types: {@link BigDecimal}, {@link BigInteger}, {@link Boolean}, {@link Byte},
+   * @param <T>  property type. Supported basic types: {@link BigDecimal}, {@link BigInteger}, {@link Boolean}, {@link Byte},
    *             {@link Character}, {@link Class}, {@link Double}, {@link Enum}, {@link File}, {@link Float}, {@link Integer},
    *             {@link Long}, {@link Number}, {@link Short}, {@link String}, {@link URL}, {@link URI} and arrays.
    *             For {@link Collection} support see method {@link #getProperty(String, GenericTypeInterface)})
@@ -74,7 +74,7 @@ public interface ConfigurationProvider {
    * @param genericType {@link GenericTypeInterface} wrapper for {@code <T>}
    * @return configuration value
    * @throws NoSuchElementException   when the provided {@code key} doesn't have a corresponding config value
-   * @throws IllegalArgumentException when property can't be coverted to {@code type}
+   * @throws IllegalArgumentException when property can't be converted to {@code type}
    * @throws IllegalStateException    when provider is unable to fetch configuration value for the given {@code key}
    */
   <T> T getProperty(String key, GenericTypeInterface genericType);
@@ -91,7 +91,7 @@ public interface ConfigurationProvider {
    * @param type   {@link Class} for {@code <T>}
    * @return configuration object bound to this {@link ConfigurationProvider}
    * @throws NoSuchElementException   when the provided {@code key} doesn't have a corresponding config value
-   * @throws IllegalArgumentException when property can't be coverted to {@code type}
+   * @throws IllegalArgumentException when property can't be converted to {@code type}
    * @throws IllegalStateException    when provider is unable to fetch configuration value for the given {@code key}
    */
   <T> T bind(String prefix, Class<T> type);
