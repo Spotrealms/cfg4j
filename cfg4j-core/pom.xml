@@ -84,7 +84,7 @@
 		</dependency>
 	</dependencies>
 	
-	<!-- Set specific build properties -->
+	<!-- Set build properties -->
 	<build>
 		<plugins>
 			<!-- Compile the project into a JAR file and generate JARs for unit tests -->
@@ -99,6 +99,16 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+		
+			<!-- Common build plugins -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
