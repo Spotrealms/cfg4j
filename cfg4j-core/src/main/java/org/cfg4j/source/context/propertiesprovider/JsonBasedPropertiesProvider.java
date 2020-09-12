@@ -18,25 +18,32 @@ package org.cfg4j.source.context.propertiesprovider;
 
 import static java.util.Objects.requireNonNull;
 
+import org.hjson.JsonValue;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
- * {@link PropertiesProvider} that interprets given stream as JSON file.
+ * {@link PropertiesProvider} that interprets given stream as JSON or HJSON file.
  */
 public class JsonBasedPropertiesProvider extends FormatBasedPropertiesProvider {
 
   /**
-   * Get {@link Properties} for a given {@code inputStream} treating it as a JSON file.
+   * Get {@link Properties} for a given {@code inputStream} treating it as a JSON or HJSON file.
    *
-   * @param inputStream input stream representing JSON file
+   * @param inputStream input stream representing JSON or HJSON file
    * @return properties representing values from {@code inputStream}
    * @throws IllegalStateException when unable to read properties
    */
@@ -47,8 +54,16 @@ public class JsonBasedPropertiesProvider extends FormatBasedPropertiesProvider {
     Properties properties = new Properties();
 
     try {
+    	//Extract all lines
+	  	String hjsonText = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
 
-      JSONTokener tokener = new JSONTokener(inputStream);
+	  	//Convert to JSON
+	    String jsonString = JsonValue.readHjson(hjsonText).toString();
+
+	    //Convert back to an InputStream
+	    InputStream jsonStream = new ByteArrayInputStream(jsonString.getBytes());
+
+      JSONTokener tokener = new JSONTokener(jsonStream);
       if (tokener.end()) {
         return properties;
       }

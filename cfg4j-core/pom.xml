@@ -44,6 +44,12 @@
 			<version>20200518</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.hjson</groupId>
+			<artifactId>hjson</artifactId>
+			<version>3.0.0</version>
+			<scope>compile</scope>
+		</dependency>
 		
 		<!-- Common dependencies (version and scope managed by parent POM) -->
 		<dependency>

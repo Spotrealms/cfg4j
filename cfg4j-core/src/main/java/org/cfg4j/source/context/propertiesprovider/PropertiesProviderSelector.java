@@ -32,7 +32,7 @@ public class PropertiesProviderSelector {
    *
    * @param propertiesProvider provider used for parsing properties files
    * @param yamlProvider       provider used for parsing Yaml files
-   * @param jsonProvider       provider used for parsing JSON files
+   * @param jsonProvider       provider used for parsing JSON and HJSON files
    */
   public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider) {
     this.propertiesProvider = requireNonNull(propertiesProvider);
@@ -50,7 +50,7 @@ public class PropertiesProviderSelector {
   public PropertiesProvider getProvider(String filename) {
     if (filename.endsWith(".yaml") || filename.endsWith(".yml")) {
       return yamlProvider;
-    } else if (filename.endsWith(".json")) {
+    } else if ((filename.endsWith(".json") || (filename.endsWith(".hjson")))){
       return jsonProvider;
     } else {
       return propertiesProvider;
