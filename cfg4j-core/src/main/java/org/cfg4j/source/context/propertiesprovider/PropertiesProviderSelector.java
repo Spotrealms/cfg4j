@@ -48,6 +48,9 @@ public class PropertiesProviderSelector {
    * @return provider for the give file type
    */
   public PropertiesProvider getProvider(String filename) {
+  	//Transform to lowercase
+	  filename = filename.toLowerCase();
+
     if (filename.endsWith(".yaml") || filename.endsWith(".yml")) {
       return yamlProvider;
     } else if ((filename.endsWith(".json") || (filename.endsWith(".hjson")))){

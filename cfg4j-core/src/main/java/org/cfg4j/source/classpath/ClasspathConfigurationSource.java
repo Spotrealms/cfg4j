@@ -122,7 +122,8 @@ public class ClasspathConfigurationSource implements ConfigurationSource {
         PropertiesProvider provider = propertiesProviderSelector.getProvider(path.getFileName().toString());
         properties.putAll(provider.getProperties(input));
 
-      } catch (IOException e) {
+      }
+      catch (IOException e) {
         throw new IllegalStateException("Unable to load properties from classpath: " + path, e);
       }
     }
