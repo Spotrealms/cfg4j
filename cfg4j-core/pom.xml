@@ -50,6 +50,12 @@
 			<version>3.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.tomlj</groupId>
+			<artifactId>tomlj</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
 		
 		<!-- Common dependencies (version and scope managed by parent POM) -->
 		<dependency>

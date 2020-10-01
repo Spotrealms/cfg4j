@@ -25,6 +25,7 @@ public class PropertiesProviderSelector {
 
   private final PropertiesProvider yamlProvider;
   private final PropertiesProvider jsonProvider;
+  private final PropertiesProvider tomlProvider;
   private final PropertiesProvider propertiesProvider;
 
   /**
@@ -33,11 +34,13 @@ public class PropertiesProviderSelector {
    * @param propertiesProvider provider used for parsing properties files
    * @param yamlProvider       provider used for parsing Yaml files
    * @param jsonProvider       provider used for parsing JSON and HJSON files
+   * @param tomlProvider       provider used for parsing TOML and INI files
    */
-  public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider) {
+  public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider, PropertiesProvider tomlProvider) {
     this.propertiesProvider = requireNonNull(propertiesProvider);
     this.yamlProvider = requireNonNull(yamlProvider);
     this.jsonProvider = requireNonNull(jsonProvider);
+    this.tomlProvider = requireNonNull(tomlProvider);
   }
 
   /**
@@ -51,12 +54,17 @@ public class PropertiesProviderSelector {
   	//Transform to lowercase
 	  filename = filename.toLowerCase();
 
-    if (filename.endsWith(".yaml") || filename.endsWith(".yml")) {
-      return yamlProvider;
-    } else if ((filename.endsWith(".json") || (filename.endsWith(".hjson")))){
-      return jsonProvider;
-    } else {
-      return propertiesProvider;
-    }
+	  //Yaml-based config
+    if(filename.endsWith(".yaml") || filename.endsWith(".yml")) return yamlProvider;
+
+    //Json/HJson-based config
+    else if((filename.endsWith(".json") || (filename.endsWith(".hjson")))) return jsonProvider;
+
+    //Toml-based config
+    else if(filename.endsWith(".toml") || filename.endsWith(".tml")) return tomlProvider;
+   //else if(filename.endsWith(".ini")) return tomlProvider;
+
+    //Return a properties based config by default
+    else return propertiesProvider;
   }
 }

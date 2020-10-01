@@ -25,6 +25,7 @@ import org.cfg4j.source.context.propertiesprovider.JsonBasedPropertiesProvider;
 import org.cfg4j.source.context.propertiesprovider.PropertiesProvider;
 import org.cfg4j.source.context.propertiesprovider.PropertiesProviderSelector;
 import org.cfg4j.source.context.propertiesprovider.PropertyBasedPropertiesProvider;
+import org.cfg4j.source.context.propertiesprovider.TomlBasedPropertiesProvider;
 import org.cfg4j.source.context.propertiesprovider.YamlBasedPropertiesProvider;
 
 import java.io.FileInputStream;
@@ -66,7 +67,7 @@ public class FilesConfigurationSource implements ConfigurationSource {
    */
   public FilesConfigurationSource(ConfigFilesProvider configFilesProvider) {
     this(configFilesProvider, new PropertiesProviderSelector(
-        new PropertyBasedPropertiesProvider(), new YamlBasedPropertiesProvider(), new JsonBasedPropertiesProvider()
+        new PropertyBasedPropertiesProvider(), new YamlBasedPropertiesProvider(), new JsonBasedPropertiesProvider(), new TomlBasedPropertiesProvider()
     ));
   }
 
