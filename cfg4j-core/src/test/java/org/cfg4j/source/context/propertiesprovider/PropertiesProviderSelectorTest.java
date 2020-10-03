@@ -35,6 +35,9 @@ class PropertiesProviderSelectorTest {
   private PropertiesProvider jsonProvider;
 
   @Mock
+  private PropertiesProvider hjsonProvider;
+
+  @Mock
   private PropertiesProvider tomlProvider;
 
   @Mock
@@ -44,7 +47,7 @@ class PropertiesProviderSelectorTest {
 
   @BeforeEach
   void setUp() {
-    selector = new PropertiesProviderSelector(propertiesProvider, yamlProvider, jsonProvider, tomlProvider);
+    selector = new PropertiesProviderSelector(propertiesProvider, yamlProvider, jsonProvider, hjsonProvider, tomlProvider);
   }
 
   @Test
@@ -60,6 +63,11 @@ class PropertiesProviderSelectorTest {
   @Test
   void returnsJsonProviderForJson() {
     assertThat(selector.getProvider("test.json")).isEqualTo(jsonProvider);
+  }
+
+  @Test
+  void returnsHJsonProviderForHJson() {
+    assertThat(selector.getProvider("test.hjson")).isEqualTo(hjsonProvider);
   }
 
   @Test

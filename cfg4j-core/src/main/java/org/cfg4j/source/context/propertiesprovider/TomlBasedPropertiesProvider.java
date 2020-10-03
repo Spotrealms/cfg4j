@@ -47,7 +47,7 @@ public class TomlBasedPropertiesProvider extends FormatBasedPropertiesProvider {
 
 		Properties properties = new Properties();
 
-		try{
+		try {
 			//Parse the InputStream to toml
 			TomlParseResult toml = Toml.parse(inputStream);
 
@@ -89,7 +89,7 @@ public class TomlBasedPropertiesProvider extends FormatBasedPropertiesProvider {
 				//Recursively call the method
 				value = convertToMap(((TomlTable) value).toMap());
 			}
-			else if (value instanceof TomlArray){
+			else if(value instanceof TomlArray){
 				//Create a new collection to hold the toml array elements
 				ArrayList<Map<String, Object>> collection = new ArrayList<>();
 

@@ -25,6 +25,7 @@ public class PropertiesProviderSelector {
 
   private final PropertiesProvider yamlProvider;
   private final PropertiesProvider jsonProvider;
+  private final PropertiesProvider hjsonProvider;
   private final PropertiesProvider tomlProvider;
   private final PropertiesProvider propertiesProvider;
 
@@ -33,13 +34,15 @@ public class PropertiesProviderSelector {
    *
    * @param propertiesProvider provider used for parsing properties files
    * @param yamlProvider       provider used for parsing Yaml files
-   * @param jsonProvider       provider used for parsing JSON and HJSON files
+   * @param jsonProvider       provider used for parsing JSON files
+   * @param hjsonProvider       provider used for parsing HJSON files
    * @param tomlProvider       provider used for parsing TOML and INI files
    */
-  public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider, PropertiesProvider tomlProvider) {
+  public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider, PropertiesProvider hjsonProvider, PropertiesProvider tomlProvider) {
     this.propertiesProvider = requireNonNull(propertiesProvider);
     this.yamlProvider = requireNonNull(yamlProvider);
     this.jsonProvider = requireNonNull(jsonProvider);
+    this.hjsonProvider = requireNonNull(hjsonProvider);
     this.tomlProvider = requireNonNull(tomlProvider);
   }
 
@@ -57,12 +60,14 @@ public class PropertiesProviderSelector {
 	  //Yaml-based config
     if(filename.endsWith(".yaml") || filename.endsWith(".yml")) return yamlProvider;
 
-    //Json/HJson-based config
-    else if((filename.endsWith(".json") || (filename.endsWith(".hjson")))) return jsonProvider;
+    //Json-based config
+    else if(filename.endsWith(".json")) return jsonProvider;
+
+    //Hjson-based config
+    else if(filename.endsWith(".hjson")) return hjsonProvider;
 
     //Toml-based config
     else if(filename.endsWith(".toml") || filename.endsWith(".tml")) return tomlProvider;
-   //else if(filename.endsWith(".ini")) return tomlProvider;
 
     //Return a properties based config by default
     else return propertiesProvider;
