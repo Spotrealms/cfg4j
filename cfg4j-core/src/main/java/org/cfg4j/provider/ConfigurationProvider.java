@@ -120,17 +120,6 @@ public interface ConfigurationProvider {
 		}
 	}
 
-	/*
-	 * Checks if a given key has a value that is non-null
-	 *
-	 * @param key The desired key in the config
-	 * @return Whether the key has a non-null value
-	 * @throws NoSuchElementException   When the provided {@code key} doesn't exist
-	 * @throws IllegalStateException    When provider is unable to fetch configuration
-
-	boolean hasValue(String key);
-	 */
-
 	/**
 	 * Checks if a given key's value is castable to a given type
 	 *
@@ -180,21 +169,6 @@ public interface ConfigurationProvider {
 	}
 
 	/**
-	 * Checks if a given key's value is castable to an array of the given type
-	 *
-	 * @param key The desired key in the config
-	 * @param type {@link Class} for {@code <T>}
-	 * @param <T> The type of array to check for
-	 * @return Whether the key's value is castable to an array
-	 * @throws NoSuchElementException   When the provided {@code key} doesn't have a corresponding config value
-	 * @throws IllegalStateException    When provider is unable to fetch configuration value for the given {@code key}
-	 */
-	default <T> boolean isArrayOf(String key, Class<T> type){
-		//Check if the value is an array and the key maps to a value of the given type and return the result
-		return isArray(key) && is(key, type);
-	}
-
-	/**
 	 * Checks if a given key's value is castable to a generic collection
 	 * (eg: LinkedList, ArrayList, etc)
 	 *
@@ -216,22 +190,6 @@ public interface ConfigurationProvider {
 			//Return false as an error occurred while trying to cast
 			return false;
 		}
-	}
-
-	/**
-	 * Checks if a given key's value is castable to a collection of the given type
-	 * (eg: LinkedList, ArrayList, etc)
-	 *
-	 * @param key The desired key in the config
-	 * @param type {@link Class} for {@code <T>}
-	 * @param <T> The type of collection to check for
-	 * @return Whether the key's value is castable to a generic collection
-	 * @throws NoSuchElementException   When the provided {@code key} doesn't have a corresponding config value
-	 * @throws IllegalStateException    When provider is unable to fetch configuration value for the given {@code key}
-	 */
-	default <T> boolean isCollectionOf(String key, Class<T> type){
-		//Check if the value is a collection and the key maps to a value of the given type and return the result
-		return isCollection(key) && is(key, type);
 	}
 
 	//// EXPLICIT TYPE GETTERS & CHECKERS ////
