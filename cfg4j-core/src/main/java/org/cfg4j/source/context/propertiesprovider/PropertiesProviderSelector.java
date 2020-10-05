@@ -23,53 +23,53 @@ import static java.util.Objects.requireNonNull;
  */
 public class PropertiesProviderSelector {
 
-  private final PropertiesProvider yamlProvider;
-  private final PropertiesProvider jsonProvider;
-  private final PropertiesProvider hjsonProvider;
-  private final PropertiesProvider tomlProvider;
-  private final PropertiesProvider propertiesProvider;
+	private final PropertiesProvider yamlProvider;
+	private final PropertiesProvider jsonProvider;
+	private final PropertiesProvider hjsonProvider;
+	private final PropertiesProvider tomlProvider;
+	private final PropertiesProvider propertiesProvider;
 
-  /**
-   * Construct selector.
-   *
-   * @param propertiesProvider provider used for parsing properties files
-   * @param yamlProvider       provider used for parsing Yaml files
-   * @param jsonProvider       provider used for parsing JSON files
-   * @param hjsonProvider       provider used for parsing HJSON files
-   * @param tomlProvider       provider used for parsing TOML and INI files
-   */
-  public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider, PropertiesProvider hjsonProvider, PropertiesProvider tomlProvider) {
-    this.propertiesProvider = requireNonNull(propertiesProvider);
-    this.yamlProvider = requireNonNull(yamlProvider);
-    this.jsonProvider = requireNonNull(jsonProvider);
-    this.hjsonProvider = requireNonNull(hjsonProvider);
-    this.tomlProvider = requireNonNull(tomlProvider);
-  }
+	/**
+	 * Construct selector.
+	 *
+	 * @param propertiesProvider provider used for parsing properties files
+	 * @param yamlProvider       provider used for parsing Yaml files
+	 * @param jsonProvider       provider used for parsing JSON files
+	 * @param hjsonProvider      provider used for parsing HJSON files
+	 * @param tomlProvider       provider used for parsing TOML and INI files
+	 */
+	public PropertiesProviderSelector(PropertiesProvider propertiesProvider, PropertiesProvider yamlProvider, PropertiesProvider jsonProvider, PropertiesProvider hjsonProvider, PropertiesProvider tomlProvider) {
+		this.propertiesProvider = requireNonNull(propertiesProvider);
+		this.yamlProvider = requireNonNull(yamlProvider);
+		this.jsonProvider = requireNonNull(jsonProvider);
+		this.hjsonProvider = requireNonNull(hjsonProvider);
+		this.tomlProvider = requireNonNull(tomlProvider);
+	}
 
-  /**
-   * Selects {@link PropertiesProvider} to use based on a file extension. For *.yaml files
-   * returns {@code yamlProvider}. For any other extension returns {@code propertiesProvider}.
-   *
-   * @param filename configuration file name
-   * @return provider for the give file type
-   */
-  public PropertiesProvider getProvider(String filename) {
-  	//Transform to lowercase
-	  filename = filename.toLowerCase();
+	/**
+	 * Selects {@link PropertiesProvider} to use based on a file extension. For *.yaml files
+	 * returns {@code yamlProvider}. For any other extension returns {@code propertiesProvider}.
+	 *
+	 * @param filename configuration file name
+	 * @return provider for the give file type
+	 */
+	public PropertiesProvider getProvider(String filename) {
+		//Transform to lowercase
+		filename = filename.toLowerCase();
 
-	  //Yaml-based config
-    if(filename.endsWith(".yaml") || filename.endsWith(".yml")) return yamlProvider;
+		//Yaml-based config
+		if(filename.endsWith(".yaml") || filename.endsWith(".yml")) return yamlProvider;
 
-    //Json-based config
-    else if(filename.endsWith(".json")) return jsonProvider;
+		//Json-based config
+		else if(filename.endsWith(".json")) return jsonProvider;
 
-    //Hjson-based config
-    else if(filename.endsWith(".hjson")) return hjsonProvider;
+		//Hjson-based config
+		else if(filename.endsWith(".hjson")) return hjsonProvider;
 
-    //Toml-based config
-    else if(filename.endsWith(".toml") || filename.endsWith(".tml")) return tomlProvider;
+		//Toml-based config
+		else if(filename.endsWith(".toml") || filename.endsWith(".tml")) return tomlProvider;
 
-    //Return a properties based config by default
-    else return propertiesProvider;
-  }
+		//Return a properties based config by default
+		else return propertiesProvider;
+	}
 }

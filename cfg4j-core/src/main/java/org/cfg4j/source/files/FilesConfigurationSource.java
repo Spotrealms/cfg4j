@@ -44,102 +44,102 @@ import java.util.Properties;
  */
 public class FilesConfigurationSource implements ConfigurationSource {
 
-  private final ConfigFilesProvider configFilesProvider;
-  private final PropertiesProviderSelector propertiesProviderSelector;
+	private final ConfigFilesProvider configFilesProvider;
+	private final PropertiesProviderSelector propertiesProviderSelector;
 
-  /**
-   * Construct {@link ConfigurationSource} backed by files. Uses "application.properties" file
-   * located in the path specified by the {@link Environment} provided to {@link #getConfiguration(Environment)}
-   * calls (see corresponding javadoc for detail).
-   */
-  public FilesConfigurationSource() {
-    this(() -> Collections.singletonList(
-        Paths.get("application.properties")
-    ));
-  }
+	/**
+	 * Construct {@link ConfigurationSource} backed by files. Uses "application.properties" file
+	 * located in the path specified by the {@link Environment} provided to {@link #getConfiguration(Environment)}
+	 * calls (see corresponding javadoc for detail).
+	 */
+	public FilesConfigurationSource() {
+		this(() -> Collections.singletonList(
+				Paths.get("application.properties")
+		));
+	}
 
-  /**
-   * Construct {@link ConfigurationSource} backed by files. File paths should by provided by
-   * {@link ConfigFilesProvider} and will be treated as relative paths to the environment provided in
-   * {@link #getConfiguration(Environment)} calls (see corresponding javadoc for detail). Configuration
-   * file type is detected using file extension (see {@link PropertiesProviderSelector}).
-   *
-   * @param configFilesProvider {@link ConfigFilesProvider} supplying a list of configuration files to use
-   */
-  public FilesConfigurationSource(ConfigFilesProvider configFilesProvider) {
-    this(configFilesProvider, new PropertiesProviderSelector(
-        new PropertyBasedPropertiesProvider(), new YamlBasedPropertiesProvider(), new JsonBasedPropertiesProvider(), new HJsonBasedPropertiesProvider(), new TomlBasedPropertiesProvider()
-    ));
-  }
+	/**
+	 * Construct {@link ConfigurationSource} backed by files. File paths should by provided by
+	 * {@link ConfigFilesProvider} and will be treated as relative paths to the environment provided in
+	 * {@link #getConfiguration(Environment)} calls (see corresponding javadoc for detail). Configuration
+	 * file type is detected using file extension (see {@link PropertiesProviderSelector}).
+	 *
+	 * @param configFilesProvider {@link ConfigFilesProvider} supplying a list of configuration files to use
+	 */
+	public FilesConfigurationSource(ConfigFilesProvider configFilesProvider) {
+		this(configFilesProvider, new PropertiesProviderSelector(
+				new PropertyBasedPropertiesProvider(), new YamlBasedPropertiesProvider(), new JsonBasedPropertiesProvider(), new HJsonBasedPropertiesProvider(), new TomlBasedPropertiesProvider()
+		));
+	}
 
-  /**
-   * Construct {@link ConfigurationSource} backed by files. File paths should by provided by
-   * {@link ConfigFilesProvider} and will be treated as relative paths to the environment provided in
-   * {@link #getConfiguration(Environment)} calls (see corresponding javadoc for detail). Configuration
-   * file type is detected using file extension (see {@link PropertiesProviderSelector}).
-   *
-   * @param configFilesProvider        {@link ConfigFilesProvider} supplying a list of configuration files to use
-   * @param propertiesProviderSelector selector used for choosing {@link PropertiesProvider} based on a configuration file extension
-   */
-  public FilesConfigurationSource(ConfigFilesProvider configFilesProvider, PropertiesProviderSelector propertiesProviderSelector) {
-    this.configFilesProvider = requireNonNull(configFilesProvider);
-    this.propertiesProviderSelector = requireNonNull(propertiesProviderSelector);
-  }
+	/**
+	 * Construct {@link ConfigurationSource} backed by files. File paths should by provided by
+	 * {@link ConfigFilesProvider} and will be treated as relative paths to the environment provided in
+	 * {@link #getConfiguration(Environment)} calls (see corresponding javadoc for detail). Configuration
+	 * file type is detected using file extension (see {@link PropertiesProviderSelector}).
+	 *
+	 * @param configFilesProvider        {@link ConfigFilesProvider} supplying a list of configuration files to use
+	 * @param propertiesProviderSelector selector used for choosing {@link PropertiesProvider} based on a configuration file extension
+	 */
+	public FilesConfigurationSource(ConfigFilesProvider configFilesProvider, PropertiesProviderSelector propertiesProviderSelector) {
+		this.configFilesProvider = requireNonNull(configFilesProvider);
+		this.propertiesProviderSelector = requireNonNull(propertiesProviderSelector);
+	}
 
-  /**
-   * Get configuration set for a given {@code environment} from this source in a form of {@link Properties}.
-   * {@link Environment} name is prepended to all file paths from {@link ConfigFilesProvider}
-   * to form an absolute configuration file path. If environment name is empty paths are treated as relative
-   * to the user's home directory location.
-   *
-   * @param environment environment to use
-   * @return configuration set for {@code environment}
-   * @throws MissingEnvironmentException when requested environment couldn't be found
-   * @throws IllegalStateException       when unable to fetch configuration
-   */
-  @Override
-  public Properties getConfiguration(Environment environment) {
-    Properties properties = new Properties();
+	/**
+	 * Get configuration set for a given {@code environment} from this source in a form of {@link Properties}.
+	 * {@link Environment} name is prepended to all file paths from {@link ConfigFilesProvider}
+	 * to form an absolute configuration file path. If environment name is empty paths are treated as relative
+	 * to the user's home directory location.
+	 *
+	 * @param environment environment to use
+	 * @return configuration set for {@code environment}
+	 * @throws MissingEnvironmentException when requested environment couldn't be found
+	 * @throws IllegalStateException       when unable to fetch configuration
+	 */
+	@Override
+	public Properties getConfiguration(Environment environment) {
+		Properties properties = new Properties();
 
-    Path rootPath;
-    if (environment.getName().trim().isEmpty()) {
-      rootPath = Paths.get(System.getProperty("user.home"));
-    } else {
-      rootPath = Paths.get(environment.getName());
-    }
+		Path rootPath;
+		if (environment.getName().trim().isEmpty()) {
+			rootPath = Paths.get(System.getProperty("user.home"));
+		} else {
+			rootPath = Paths.get(environment.getName());
+		}
 
-    if (!rootPath.toFile().exists()) {
-      throw new MissingEnvironmentException("Directory doesn't exist: " + rootPath);
-    }
+		if (!rootPath.toFile().exists()) {
+			throw new MissingEnvironmentException("Directory doesn't exist: " + rootPath);
+		}
 
-    List<Path> paths = new ArrayList<>();
-    for (Path path : configFilesProvider.getConfigFiles()) {
-      paths.add(rootPath.resolve(path));
-    }
+		List<Path> paths = new ArrayList<>();
+		for (Path path : configFilesProvider.getConfigFiles()) {
+			paths.add(rootPath.resolve(path));
+		}
 
-    for (Path path : paths) {
-      try (InputStream input = new FileInputStream(path.toFile())) {
+		for (Path path : paths) {
+			try (InputStream input = new FileInputStream(path.toFile())) {
 
-        PropertiesProvider provider = propertiesProviderSelector.getProvider(path.getFileName().toString());
-        properties.putAll(provider.getProperties(input));
+				PropertiesProvider provider = propertiesProviderSelector.getProvider(path.getFileName().toString());
+				properties.putAll(provider.getProperties(input));
 
-      } catch (IOException e) {
-        throw new IllegalStateException("Unable to load properties from file: " + path, e);
-      }
-    }
+			} catch (IOException e) {
+				throw new IllegalStateException("Unable to load properties from file: " + path, e);
+			}
+		}
 
-    return properties;
-  }
+		return properties;
+	}
 
-  @Override
-  public void init() {
-    // NOP
-  }
+	@Override
+	public void init() {
+		// NOP
+	}
 
-  @Override
-  public String toString() {
-    return "FilesConfigurationSource{" +
-        "configFilesProvider=" + configFilesProvider +
-        '}';
-  }
+	@Override
+	public String toString() {
+		return "FilesConfigurationSource{" +
+				"configFilesProvider=" + configFilesProvider +
+				'}';
+	}
 }

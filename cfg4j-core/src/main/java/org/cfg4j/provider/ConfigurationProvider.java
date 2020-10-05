@@ -32,7 +32,28 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 
 /**
- * Provides access to configuration on a single property level, aggregated and through binding in a format agnostic way.
+ * Provides access to configuration on a single property level, aggregated
+ * and through binding in a format agnostic way. In addition, this class also
+ * provides access to properties with support for explicit type calls for many
+ * common typings in the Java language as well as checks to ensure the target
+ * property is the desired type. Supports both getting and checking properties
+ * based on the following types:
+ * <ul>
+ *  <li>Primitives (eg: {@code boolean}, {@code int}, {@code double}, etc)</li>
+ *  <li>Primitive Arrays (eg: {@code boolean[]}, {@code int[]}, {@code double[]}, etc)</li>
+ *  <li>Wrapper Type Arrays (eg: {@code Boolean[]}, {@code Integer[]}, {@code Double[]}, etc)</li>
+ *  <li>Special Numbers (eg: {@code BigDecimal}, {@code BigInteger}, {@code Number})</li>
+ *  <li>Special Number Arrays (eg: {@code BigDecimal[]}, {@code BigInteger[]}, {@code Number[]})</li>
+ *  <li>Strings and String Arrays (eg: {@code String} and {@code String[]})</li>
+ *  <li>URIs and URLs (eg: {@code URI} and {@code URL})</li>
+ *  <li>URI and URL Arrays (eg: {@code URI[]} and {@code URL[]})</li>
+ *  <li>Java IO/NIO Objects (eg: {@code File} and {@code Path})</li>
+ *  <li>Java IO/NIO Object Arrays (eg: {@code File[]} and {@code Path[]})</li>
+ * </ul>
+ * In addition, this class also allows the types of properties to be checked via
+ * {@link ConfigurationProvider#is}, {@link ConfigurationProvider#isArray}, and
+ * {@link ConfigurationProvider#isCollection} respectively. To enure that properties
+ * actually exist, the method {@link ConfigurationProvider#has} is included as well.
  */
 public interface ConfigurationProvider {
 
@@ -192,7 +213,8 @@ public interface ConfigurationProvider {
 		}
 	}
 
-	//// EXPLICIT TYPE GETTERS & CHECKERS ////
+
+	//// EXPLICIT PROPERTIES GETTERS ////
 	// PRIMITIVE TYPES //
 	/**
 	 * Gets a config value from its key as a primitive boolean
@@ -361,6 +383,7 @@ public interface ConfigurationProvider {
 	 * @throws IllegalStateException    When provider is unable to fetch configuration value for the given {@code key}
 	 */
 	default boolean isShort(String key){ return is(key, short.class); }
+
 
 	// PRIMITIVE ARRAYS //
 	/**
@@ -531,6 +554,7 @@ public interface ConfigurationProvider {
 	 */
 	default boolean isShortArr(String key){ return is(key, short[].class); }
 
+
 	// WRAPPED ARRAYS //
 	/**
 	 * Gets a config value from its key as a boolean array
@@ -700,6 +724,7 @@ public interface ConfigurationProvider {
 	 */
 	default boolean isWShortArr(String key){ return is(key, Short[].class); }
 
+
 	// BIGDECIMAL, BIGINTEGER, AND NUMBER //
 	/**
 	 * Gets a config value from its key as a BigDecimal
@@ -827,6 +852,7 @@ public interface ConfigurationProvider {
 	 */
 	default boolean isNumberArr(String key){ return is(key, Number[].class); }
 
+
 	// STRING //
 	/**
 	 * Gets a config value from its key as a String
@@ -869,6 +895,7 @@ public interface ConfigurationProvider {
 	 * @throws IllegalStateException    When provider is unable to fetch configuration value for the given {@code key}
 	 */
 	default boolean isStringArr(String key){ return is(key, String[].class); }
+
 
 	// URI AND URL //
 	/**
@@ -954,6 +981,7 @@ public interface ConfigurationProvider {
 	 * @throws IllegalStateException    When provider is unable to fetch configuration value for the given {@code key}
 	 */
 	default boolean isURLArr(String key){ return is(key, URL[].class); }
+
 
 	// FILE AND PATH //
 	/**
