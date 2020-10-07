@@ -21,10 +21,12 @@ import com.github.drapostolos.typeparser.TypeParserException;
 import org.cfg4j.source.ConfigurationSource;
 import org.cfg4j.source.context.environment.Environment;
 import org.cfg4j.source.context.environment.MissingEnvironmentException;
+import org.cfg4j.utils.Constants;
 import org.cfg4j.validator.BindingValidator;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
@@ -60,12 +62,19 @@ class SimpleConfigurationProvider implements ConfigurationProvider {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> T getProperty(String key, Class<T> type) {
 		String propertyStr = getProperty(key);
 
 		try {
-			TypeParser parser = TypeParser.newBuilder().build();
-			return parser.parse(propertyStr, type);
+			TypeParser parser = TypeParser.newBuilder().setSplitStrategy((input, helper) -> Arrays.asList(input.split(Constants.ARRAY_DELIMITER))).build();
+
+			T parsed = parser.parse(propertyStr, type);
+
+			//Check if the parsed value is a string and unescape the array delimiter if it is
+			if(parsed instanceof String) return (T) ((String) parsed).replaceAll(Constants.ARRAY_DELIMITER, ",");
+
+			return parsed;
 		} catch (TypeParserException | NoSuchRegisteredParserException e) {
 			throw new IllegalArgumentException("Unable to cast value '" + propertyStr + "' to " + type, e);
 		}

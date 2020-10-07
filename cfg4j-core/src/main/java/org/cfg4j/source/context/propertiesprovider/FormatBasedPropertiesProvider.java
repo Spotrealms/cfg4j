@@ -16,6 +16,8 @@
 
 package org.cfg4j.source.context.propertiesprovider;
 
+import org.cfg4j.utils.Constants;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -23,41 +25,41 @@ import java.util.Map;
 
 abstract class FormatBasedPropertiesProvider implements PropertiesProvider {
 
-  /**
-   * Flatten multi-level map.
-   */
-  @SuppressWarnings("unchecked")
-  Map<String, Object> flatten(Map<String, Object> source) {
-    Map<String, Object> result = new LinkedHashMap<>();
+	/**
+	 * Flatten multi-level map.
+	 */
+	@SuppressWarnings("unchecked")
+	Map<String, Object> flatten(Map<String, Object> source) {
+		Map<String, Object> result = new LinkedHashMap<>();
 
-    for (String key : source.keySet()) {
-      Object value = source.get(key);
+		for (String key : source.keySet()) {
+			Object value = source.get(key);
 
-      if (value instanceof Map) {
-        Map<String, Object> subMap = flatten((Map<String, Object>) value);
+			if (value instanceof Map) {
+				Map<String, Object> subMap = flatten((Map<String, Object>) value);
 
-        for (String subkey : subMap.keySet()) {
-          result.put(key + "." + subkey, subMap.get(subkey));
-        }
-      } else if (value instanceof Collection) {
-        StringBuilder joiner = new StringBuilder();
-        String separator = "";
+				for (String subkey : subMap.keySet()) {
+					result.put(key + "." + subkey, subMap.get(subkey));
+				}
+			} else if (value instanceof Collection) {
+				StringBuilder joiner = new StringBuilder();
+				String separator = "";
 
-        for (Object element : ((Collection) value)) {
-          Map<String, Object> subMap = flatten(Collections.singletonMap(key, element));
-          joiner
-              .append(separator)
-              .append(subMap.entrySet().iterator().next().getValue().toString());
+				for (Object element : ((Collection) value)) {
+					Map<String, Object> subMap = flatten(Collections.singletonMap(key, element));
+					joiner
+							.append(separator)
+							.append(subMap.entrySet().iterator().next().getValue().toString());
 
-          separator = ",";
-        }
+					separator = Constants.ARRAY_DELIMITER;
+				}
 
-        result.put(key, joiner.toString());
-      } else {
-        result.put(key, value);
-      }
-    }
+				result.put(key, joiner.toString());
+			} else {
+				result.put(key, value);
+			}
+		}
 
-    return result;
-  }
+		return result;
+	}
 }
