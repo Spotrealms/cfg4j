@@ -55,7 +55,7 @@ abstract class FormatBasedPropertiesProvider implements PropertiesProvider {
 					separator = Constants.ARRAY_DELIMITER;
 				}
 
-				result.put(key, joiner);
+				result.put(key, joiner.toString());
 			}
 			else {
 				result.put(key, value);
